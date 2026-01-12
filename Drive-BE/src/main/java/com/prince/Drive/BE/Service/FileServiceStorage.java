@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FileServiceStorage {
@@ -49,5 +51,27 @@ public class FileServiceStorage {
         fileRepository.save(fileEntity);
 
         return "File updated successfully !" ;
+    }
+
+    public List<FileEntity> getFilesInFolder(Long parentFolderId){
+        if(parentFolderId == null){
+            return fileRepository.findAll()
+                    .stream()
+                    .filter(f -> f.getParentFolderId() == null)
+                    .collect(Collectors.toList());
+        }
+        else{
+            return fileRepository.findAll()
+                    .stream()
+                    .filter(f -> parentFolderId.equals(f.getParentFolderId()))
+                    .collect(Collectors.toList());
+        }
+    }
+    public FileEntity getFileById(Long id){
+        return fileRepository.findById(id).orElseThrow(()->new RuntimeException("File Not Found"));
+    }
+
+    public void deleteById(Long id){
+        fileRepository.deleteById(id);
     }
 }
