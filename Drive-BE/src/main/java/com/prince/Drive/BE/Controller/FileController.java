@@ -7,6 +7,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -60,4 +62,19 @@ public class FileController {
         }
         return ResponseEntity.ok(files);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteFile(@PathVariable Long id){
+     try{
+         //metadata from mysql
+         FileEntity fileEntity = fileServiceStorage.getFileById(id);
+         Path path = Paths.get(fileEntity.getPath());
+         Files.deleteIfExists(path);
+         fileServiceStorage.deleteById(id);
+         return ResponseEntity.ok("Files Deleted Successfully !");
+     }catch (Exception e){
+         return ResponseEntity.status(500).body("Failed to delete Files");
+     }
+    }
+
 }
