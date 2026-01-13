@@ -1,0 +1,13 @@
+/* App.css */
+body {
+  margin: 0;
+  background-color: #050505; /* Deep black/dark grey */
+  color: #eeeeee;
+  font-family: 'ITC Benguiat', 'Courier New', serif; /* Classic Stranger Things font style */
+}
+
+.App {
+  display: flex;
+  background: radial-gradient(circle at center, #1a0505 0%, #050505 100%);
+  min-height: 100vh;
+}

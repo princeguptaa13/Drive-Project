@@ -1,0 +1,52 @@
+/* file-cards.css */
+.file-card {
+  background: #151515;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Upside Down Hover Effect */
+.file-card:hover {
+  border-color: #ff0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  transform: translateY(-5px) rotate(1deg);
+}
+
+.file-card img {
+  width: 60px;
+  filter: grayscale(100%) sepia(100%) hue-rotate(-50deg) saturate(600%); /* Turns icons red */
+}
+
+.file-name {
+  font-size: 14px;
+  color: #ddd;
+  margin-top: 10px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.file-size {
+  font-size: 11px;
+  color: #666;
+}
+
+.delete-btn {
+  background-color: transparent;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+  padding: 5px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-top: 15px;
+}
+
+.delete-btn:hover {
+  background-color: #ff4d4d;
+  color: black;
+}

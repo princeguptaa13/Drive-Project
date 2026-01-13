@@ -1,0 +1,36 @@
+/* header.css */
+.header {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 2px solid #b10606; /* Blood red border */
+  box-shadow: 0 0 15px rgba(177, 6, 6, 0.4);
+}
+
+.header h2 {
+  font-size: 32px;
+  color: #ff0000;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+  margin-bottom: 15px;
+}
+
+.header input {
+  width: 400px;
+  padding: 12px;
+  background: #111;
+  border: 1px solid #444;
+  border-radius: 4px; /* More rectangular/retro */
+  color: #ff0000;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.header input:focus {
+  border: 1px solid #ff0000;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+}
