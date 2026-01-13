@@ -1,0 +1,14 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Backend
+Drive-BE/target/
+
+# Frontend
+google-drive-clone/node_modules/
+google-drive-clone/build/
+google-drive-clone/.env
+
+# Runtime uploads
+uploads/
