@@ -5,27 +5,51 @@ import FileCard from "../src/component/FileCard";
 import "./DriveApp.css";
 import axios from "axios";
 
+// VERY IMPORTANT: allow cookies for OAuth session
+axios.defaults.withCredentials = true;
+
 function DriveApp() {
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [user, setUser] = useState(null); // 👈 ADD USER STATE
 
+  // 🔹 Fetch files
   useEffect(() => {
     fetchFiles();
+    fetchUser(); 
   }, []);
 
+  // 🔹 Get logged-in user from backend
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/me");
+      setUser(res.data);
+    } catch (err) {
+      setUser(null);
+    }
+  };
+
   const fetchFiles = async () => {
-    const res = await axios.get("http://localhost:8080/api/files/list");
+    const res = await axios.get("http://localhost:8080/api/files/list", { withCredentials: true });
     setFiles(res.data);
   };
 
+  // 🔹 Login with Google
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+
+  // 🔹 Logout
+  const handleLogout = () => {
+    window.location.href = "http://localhost:8080/logout";
+  };
+
+  // 🔹 Upload
   const handleUploadFromSidebar = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    await axios.post("http://localhost:8080/api/files/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
+    await axios.post("http://localhost:8080/api/files/upload", formData, { withCredentials: true });
     fetchFiles();
   };
 
@@ -34,16 +58,20 @@ function DriveApp() {
   };
 
   const handleDelete = async (id, fileName) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${fileName}"?`
-    );
-    if (!confirmed) return;
+  const confirmed = window.confirm(
+    `Are you sure you want to delete "${fileName}"?`
+  );
+  if (!confirmed) return;
 
-    await axios.delete(`http://localhost:8080/api/files/delete/${id}`);
-    fetchFiles();
-  };
+  await axios.delete(`http://localhost:8080/api/files/delete/${id}`, {
+    withCredentials: true
+  });
 
-  // Filter files based on search term
+  fetchFiles();
+};
+
+
+  // 🔹 Search filter
   const filteredFiles = files.filter((file) =>
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -51,8 +79,14 @@ function DriveApp() {
   return (
     <div className="main-layout">
       <Sidebar onFileSelect={handleUploadFromSidebar} />
+
       <div className="content-area">
-        <Header onSearch={setSearchTerm} />
+        <Header
+          onSearch={setSearchTerm}
+          user={user}
+          onLogin={handleGoogleLogin}
+          onLogout={handleLogout}
+        />
 
         {filteredFiles.length === 0 ? (
           <div className="empty-state">
